@@ -1,0 +1,322 @@
+--Practica 2
+
+--Ejercicio 1
+select p.nombre, p.apellido1, p.apellido2 
+from profesores p join departamentos d on p.departamento=d.codigo 
+where d.nombre like 'Lenguajes%';
+
+--select * from sol_2_1;
+
+--Ejercicio 2
+--Decode(a.practicos,null,'No tiene', a.practicos)
+select distinct a.codigo, a.nombre, NVL(to_Char(a.practicos),'No tiene') "Creditos Practicos" from asignaturas a
+join matricular m on (a.codigo=m.asignatura)
+join alumnos al on (m.alumno=al.dni)
+where al.nombre='Nicolas' and al.apellido1='Bersabe' and al.apellido2='Alba';
+
+--select * from sol_2_2;
+
+--Ejercicio 3
+select p.nombre, p.apellido1, p.apellido2, trunc((sysdate-p.antiguedad)/7) Antiguedad, next_day(sysdate-1,to_char(antiguedad,'day')) from profesores p
+join departamentos d on p.departamento=d.codigo
+where d.nombre='Ingenieria de Comunicaciones';
+
+--select * from sol_2_3;
+
+--Ejercicio 4
+select al.dni, al.nombre, al.apellido1, al.apellido2, al.genero, al.direccion, al.telefono, al.email, al.fecha_nacimiento, al.fecha_prim_matricula from alumnos al
+join matricular m on m.alumno=al.dni
+join asignaturas a on a.codigo=m.asignatura
+where a.nombre='Bases de Datos' and (m.calificacion!=null or m.calificacion!='SP');
+
+--select * from sol_2_4;
+
+--Ejercicio 5
+select p.id, p.nombre, p.apellido1, p.apellido2, a.codigo, a.nombre from profesores p
+join impartir i on i.profesor=p.id
+join asignaturas a on a.codigo=i.asignatura;
+
+--select * from sol_2_5;
+
+--Ejercicio 6
+select al.nombre "Nombre 1", trunc(months_between(sysdate,al.fecha_nacimiento)/12) "Edad 1",
+alu.nombre "Nombre 2", trunc(months_between(sysdate,alu.fecha_nacimiento)/12) "Edad 2"
+ from alumnos al, alumnos alu
+where upper(al.apellido1)=upper(alu.apellido1) 
+and al.dni < alu.dni;
+
+--select * from sol_2_6;
+
+--Ejercicio 7
+select al.apellido1 "Primer apellido", alu.apellido1 "Segundo Apellido" 
+from alumnos al, alumnos alu
+where (al.fecha_nacimiento between to_Date('01/01/1995','DD/MM/YYYY') and to_Date('31/12/1996','DD/MM/YYYY')) 
+and (alu.fecha_nacimiento between to_Date('01/01/1995','DD/MM/YYYY') and to_Date('31/12/1996','DD/MM/YYYY'))
+and al.dni < alu.dni;
+
+--select * from sol_2_7;
+
+--Ejercicio 8
+select p.nombre, p.apellido1, p.apellido2, trunc(months_between(sysdate,p.antiguedad)/12) "Antiguedad 1",
+p2.nombre, p2.apellido1, p2.apellido2, trunc(months_between(sysdate,p2.antiguedad)/12) "Antiguedad 2"
+from profesores p, profesores p2
+where abs(months_between(p.antiguedad,p2.antiguedad))<24 
+and p.departamento = p2.departamento
+and p.id < p2.id;
+
+
+--select * from sol_2_8;
+
+--Ejercicio 9
+select  al.nombre ||' '|| al.apellido1 ||' '|| al.apellido2 "Ella",
+alu.nombre ||' '|| alu.apellido1 ||' '|| alu.apellido2 "El"
+from alumnos al join matricular m on m.alumno = al.dni,
+alumnos alu join matricular mi on  mi.alumno = alu.dni
+where al.genero='FEM' and alu.genero='MASC' 
+and m.asignatura=112 and mi.asignatura=112 
+and Decode(m.calificacion,'MH',10,
+                          'SB',9,
+                          'NT',8,
+                          'AP',5,
+                          'SP',4,
+                          0) 
+						  > 
+Decode(mi.calificacion,   'MH',10,
+                          'SB',9,
+                          'NT',8,
+                          'AP',5,
+                          'SP',4,
+                          0)
+and to_char(al.fecha_prim_matricula,'ww') = to_char(alu.fecha_prim_matricula,'ww');
+
+--select * from sol_2_9;
+
+--Ejercicio 10
+select a1.nombre "Asignatura 1", a2.nombre "Asignatura 2", a3.nombre "Asignatura 3", m.codigo "Materia"
+from materias m
+join asignaturas a1 on m.codigo=a1.cod_materia
+join asignaturas a2 on m.codigo=a2.cod_materia
+join asignaturas a3 on m.codigo=a3.cod_materia
+where a1.codigo < a2.codigo 
+and a2.codigo< a3.codigo;
+
+--select * from sol_2_10;
+
+--Ejercicio 11
+select al.nombre, al.apellido1, al.apellido2, a.nombre "Asignatura", 
+Decode(m.calificacion,'MH','Matricula de Honor',
+              'SB','Sobresaliente',
+              'NT','Notable',
+              'AP','Aprobado',
+              'SP','Suspenso',
+              'No presentado') "Nota"
+from alumnos al 
+join matricular m on m.alumno=al.dni
+join asignaturas a on a.codigo=m.asignatura
+where trunc(months_between(sysdate,al.fecha_nacimiento)/12)>=22
+order by al.apellido1 , al.apellido2, al.nombre;
+
+--select * from sol_2_11;
+
+--Ejercicio 12
+select distinct al.nombre, al.apellido1, al.apellido2 
+from alumnos al 
+join matricular m on m.alumno=al.dni
+join impartir i on i.asignatura=m.asignatura 
+and i.grupo=m.grupo 
+and i.curso=m.curso
+join profesores p on p.id=i.profesor
+where upper(p.nombre)='ENRIQUE'
+and upper(p.apellido1)='SOLER'
+order by al.apellido1 , al.apellido2, al.nombre;
+
+--select * from sol_2_12;
+
+--Ejercicio 13
+select al.nombre, al.apellido1, al.apellido2
+from alumnos al
+join matricular m on al.dni=m.alumno
+join impartir i on i.asignatura=m.asignatura 
+and i.grupo=m.grupo 
+and i.curso=m.curso
+join profesores p on p.id=i.profesor
+join departamentos d on p.departamento=d.codigo
+where d.nombre='Lenguajes y Ciencias de la Computacion'
+order by al.apellido1 , al.apellido2, al.nombre;
+
+--select * from sol_2_13;
+
+--Ejercicio 14
+select a.nombre "Asignatura" , m.nombre "Materia", 
+p.nombre ||' '|| p.apellido1 ||' '|| p.apellido2 "Profesor", i.carga_creditos
+from asignaturas a
+join impartir i on a.codigo=i.asignatura
+join materias m on a.cod_materia=m.codigo
+join profesores p on i.profesor=p.id
+where i.carga_creditos is not null
+order by m.codigo, a.nombre DESC;
+
+--select * from sol_2_14;
+
+--Ejercicio 15
+select a.nombre, d.nombre, a.creditos, round(a.practicos/a.creditos*100,2) "%Practicos"
+from asignaturas a
+join departamentos d on a.departamento=d.codigo
+where a.creditos is not null 
+and a.teoricos is not null 
+and a.practicos is not null
+order by round(a.practicos/a.creditos*100,2) DESC;
+
+--select * from sol_2_15;
+
+--Ejercicio 16
+select a.codigo 
+from asignaturas a
+minus
+select a.codigo
+from asignaturas a
+join impartir i on a.codigo=i.asignatura
+join profesores p on i.profesor=p.id;
+
+--select * from sol_2_16;
+
+--Ejercicio 17
+select p.email
+from profesores p
+where p.email is not null
+union all
+select al.email
+from alumnos al
+where al.email is not null;
+
+--select * from sol_2_17;
+
+--Ejercicio 18
+(select initcap(al.apellido1) from alumnos al where al.apellido1 is not null
+union
+select initcap(al.apellido2) from alumnos al where al.apellido2 is not null)
+intersect
+(select initcap(p.apellido1) from profesores p where p.apellido1 is not null
+union
+select initcap(p.apellido2) from profesores p where p.apellido2 is not null);
+
+--select * from sol_2_18;
+
+--Ejercicio 19
+select al.apellido1 from alumnos al where lower(al.apellido1) like '%ll%'
+union
+select al.apellido2 from alumnos al where lower(al.apellido2) like '%ll%'
+union
+select p.apellido1 from profesores p where lower(p.apellido1) like '%ll%'
+union
+select p.apellido2 from profesores p where lower(p.apellido2) like '%ll%';
+
+--select * from sol_2_19;
+
+--Ejercicio 20
+select replace(al.apellido1,'ll','y') "APELLIDOS" from alumnos al where lower(al.apellido1) like '%ll%'
+union
+select replace(al.apellido2,'ll','y') from alumnos al where lower(al.apellido2) like '%ll%'
+union
+select replace(p.apellido1,'ll','y') from profesores p where lower(p.apellido1) like '%ll%'
+union
+select replace(p.apellido2,'ll','y') from profesores p where lower(p.apellido2) like '%ll%';
+
+--select * from sol_2_20;
+
+--Ejercicio 21
+select a.nombre, p.id 
+from asignaturas a
+left outer join impartir i on a.codigo=i.asignatura
+left outer join profesores p on i.profesor=p.id
+where a.creditos!=a.teoricos+a.practicos
+or a.creditos is not null
+and (a.teoricos is null or a.practicos is null);
+
+--select * from sol_2_21;
+
+--Ejercicio 22
+select p1.nombre "NOMBREP1", p1.apellido1 "APELLIDO1P1", p1.apellido2 "APELLIDO2P1", 
+nvl(p2.nombre,' ') "NOMBREP2", nvl(p2.apellido1,' ') "APELLIDO1P2", nvl(p2.apellido2,' ') "APELLIDO2P2"
+from profesores p1
+left outer join profesores p2 on p1.director_tesis=p2.id
+order by p1.apellido1, p1.apellido2, p1.nombre;
+
+--select * from sol_2_22;
+
+--Ejercicio 23
+select 'El director de ' || p1.nombre ||' '|| p1.apellido1 ||' '||  p1.apellido2 || ' es ' 
+|| p2.nombre ||' '|| p2.apellido1 ||' '||  p2.apellido2 "TESIS", nvl(to_char(i.tramos),'0') "Tramos"
+from profesores p1
+left outer join profesores p2 on p1.director_tesis=p2.id
+left outer join investigadores i on p2.id=i.id_profesor
+where p2.nombre is not null and p2.apellido1 is not null and p2.apellido2 is not null;
+
+--select * from sol_2_23;
+
+--Ejercicio 24
+select al.nombre, al.apellido1, al.apellido2, alu.nombre, alu.apellido1, alu.apellido2
+from alumnos al
+left outer join alumnos alu on al.fecha_prim_matricula=alu.fecha_prim_matricula 
+and al.dni!=alu.dni
+order by al.apellido1, al.apellido2, al.nombre;
+
+--select * from sol_2_24;
+
+--Ejercicio 25
+select a.nombre, i.curso, i.grupo, p.nombre, p.apellido1
+from asignaturas a
+left outer join impartir i on i.asignatura=a.codigo
+left outer join profesores p on p.id=i.profesor
+order by a.codigo;
+
+--select * from sol_2_25;
+
+--Ejercicio 26
+select p.nombre, p.id
+from profesores p
+where p.id not in (select p.id 
+		   from profesores p 
+		   join impartir i on i.profesor=p.id);
+
+--select * from sol_2_26;
+
+--Ejercicio 27
+select al.nombre, al.apellido1, al.apellido2
+from alumnos al
+where al.dni in (select distinct m.alumno 
+		 from matricular m 
+		 where m.asignatura=115)
+and al.genero='FEM'
+and rownum <=2;
+
+--select * from sol_2_27;
+
+--Ejercicio 28
+select * from profesores p
+where p.id not in (select p1.id 
+		   from profesores p1 
+		   join profesores p2 on p2.director_tesis=p1.id);
+
+--select * from sol_2_28;
+
+--Ejercicio 29
+select a.nombre, a.codigo
+from asignaturas a
+where exists (select * from asignaturas asi 
+             where nvl(asi.curso, 0) = nvl(a.curso, 0)
+             and nvl(asi.creditos, 0) > nvl(a.creditos, 0));
+
+--select * from sol_2_29;
+
+--Ejercicio 30
+select a.nombre, a.codigo
+from asignaturas a
+minus
+select a.nombre, a.codigo
+from asignaturas a
+where exists (select * from asignaturas asi 
+             where nvl(asi.curso, 0) = nvl(a.curso, 0)
+             and nvl(asi.creditos, 0) > nvl(a.creditos, 0));
+
+--select * from sol_2_30;

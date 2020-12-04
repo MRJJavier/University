@@ -1,0 +1,132 @@
+package huffman;
+/**
+ * Huffman trees and codes.
+ *
+ * Data Structures, Grado en Informatica. UMA.
+ *
+ *
+ * Student's name:
+ * Student's group:
+ */
+
+import dataStructures.dictionary.AVLDictionary;
+import dataStructures.dictionary.Dictionary;
+import dataStructures.list.LinkedList;
+import dataStructures.list.List;
+import dataStructures.priorityQueue.BinaryHeapPriorityQueue;
+import dataStructures.priorityQueue.PriorityQueue;
+import dataStructures.tuple.Tuple2;
+
+public class Huffman {
+
+    // Exercise 1  (0.75 puntos)
+    public static Dictionary<Character, Integer> weights(String s) {
+    	//to do 
+    	Dictionary<Character,Integer> dicCi = new AVLDictionary<>();
+    	for(Character c : s.toCharArray()) {
+    		if(dicCi.isDefinedAt(c)) dicCi.insert(c, dicCi.valueOf(c) + 1);
+    		else dicCi.insert(c, 1);
+    	}
+        return dicCi;
+    }
+
+    // Exercise 2.a (0.75 puntos)
+    public static PriorityQueue<WLeafTree<Character>> huffmanLeaves(String s) {
+    	//to do 
+    	Dictionary<Character,Integer> dicCi = weights(s);
+    	PriorityQueue<WLeafTree<Character>> pqWltc = new BinaryHeapPriorityQueue<>();
+    	for(Tuple2<Character,Integer> tupleCi : dicCi.keysValues()) {
+    		pqWltc.enqueue(new WLeafTree<Character>(tupleCi._1(),tupleCi._2()));
+    	}
+    	        return pqWltc;
+    }
+
+    // Exercise 2.b  (2.50 puntos)
+    public static WLeafTree<Character> huffmanTree(String s) {
+    	// s debe tener dos caracteres distintos. Si no, excepcion
+        //to do
+    	Dictionary<Character,Integer> dicCi = new AVLDictionary<>();
+    	int cont=0;
+    	for(Character c : s.toCharArray()) {
+    		if(!dicCi.isDefinedAt(c)) {
+    			dicCi.insert(c, 1);
+    			cont++;
+    		}
+    		if(cont==2) break;
+    	}
+    	if(cont < 2) throw new HuffmanException("La cadena no tiene almenos 2 simbolos distintos.");
+    	
+    	PriorityQueue<WLeafTree<Character>> pqWltc = huffmanLeaves(s);
+    	WLeafTree<Character> root=null, t1=null, t2=null;
+    	while(!pqWltc.isEmpty()) {
+    		t1=pqWltc.first();
+    		pqWltc.dequeue();
+    		if(t2==null) {
+    			t2=pqWltc.first();
+    			pqWltc.dequeue();
+    		}
+    		root= new WLeafTree<Character>(t1,t2);
+    		t2=root;
+    	}
+    	
+    	return root;
+    }
+
+    // Exercise 3.a (1 punto)
+    public static Dictionary<Character, List<Integer>> joinDics(Dictionary<Character, List<Integer>> d1, Dictionary<Character, List<Integer>> d2) {
+        //to do 
+    	//Nota propia: El enunciado aclara que los diccionarios pasados como parametros son disjuntos(no tienen claves comunes)
+    	Dictionary<Character,List<Integer>> dicCli = new AVLDictionary<>();
+    	for(Tuple2<Character,List<Integer>> tupleCli : d1.keysValues()) {
+    		dicCli.insert(tupleCli._1(),tupleCli._2());
+    	}
+    	for(Tuple2<Character,List<Integer>> tupleCli : d2.keysValues()) {
+    		dicCli.insert(tupleCli._1(),tupleCli._2());
+    	}
+    	return dicCli;
+    }
+
+    // Exercise 3.b  (1 punto)
+    public static Dictionary<Character, List<Integer>> prefixWith(int i, Dictionary<Character, List<Integer>> d) {
+        //to do 
+    	Dictionary<Character,List<Integer>> dicCli = new AVLDictionary<>();
+    	for(Tuple2<Character,List<Integer>> tupleCli : d.keysValues()) {
+    		List<Integer> lI = tupleCli._2();
+    		lI.insert(0, i);
+    		dicCli.insert(tupleCli._1(),lI);
+    	}
+    	return dicCli;
+    }
+
+    // Exercise 3.c  (1.50 puntos)
+    public static Dictionary<Character, List<Integer>> huffmanCode(WLeafTree<Character> ht) {
+        //to do
+    	Dictionary<Character,List<Integer>> dicCli = new AVLDictionary<>();
+    	Dictionary<Character,List<Integer>> dicClil = new AVLDictionary<>();
+    	Dictionary<Character,List<Integer>> dicClir = new AVLDictionary<>();
+    	if(!ht.isLeaf()) {
+    		dicClil = prefixWith(0,huffmanCode(ht.leftChild()));
+    		dicClir = prefixWith(1,huffmanCode(ht.rightChild()));
+    		dicCli=joinDics(dicClil,dicClir);
+    	}else {
+    		List<Integer> lI = new LinkedList<>();
+    		dicCli.insert(ht.elem(), lI);
+    		
+    	}
+    	
+    	
+    	return dicCli;
+    }
+
+    // Exercise 4  (0.50 puntos)
+    public static List<Integer> encode(String s, Dictionary<Character, List<Integer>> hc) {
+        //to do 
+    	return null;
+    }
+
+    // Exercise 5  (2 puntos)
+    public static String decode(List<Integer> bits, WLeafTree<Character> ht) {
+        //to do 
+    	return null;
+    }
+}

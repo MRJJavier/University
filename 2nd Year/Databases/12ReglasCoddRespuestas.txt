@@ -1,0 +1,15 @@
+1) Nombre de la tabla, nombre de la columna y valor de la clave primaria. Regla 1
+2) No, necesita una clave primaria que identifique una fila dentro de la tabla. Regla 2
+3) No es necesario. Regla 11
+4) Se almacena en tablas y en columnas, tanto los metadatos como toda la información de una base de datos. Regla 4
+5) Es un sistema en el que existen tres valores de verdad: Verdadero, Falso y Desconocido (null). No es lo mismo la cadena vacía que el valor nulo. Regla 3
+6) Un lenguaje  que sea integral para soportar la definición de datos, manipulación de datos, definición de vistas, restricciones de integridad, y control de autorizaciones y transacciones. Regla 5
+7) Una sintaxis lineal. Significa que pueda ser usada para administrar completamente la base de datos. Regla 5
+8) Si. Un ejemplo de restricción es que ningún componente de una clave primaria puede tener valores en blanco o nulos. Regla 5 
+9) Deberia estar disponible en la vista y que la vista lo haga en la tabla. Se almacena finalmente en la tabla. Regla 6 
+10) Si. Por ejemplo, si modificamos la app de la UMA, el comportamiento de los programas debe ser predecible basado en la definición lógica de la base de datos y este comportamiento debe permanecer inalterado debido a que no hemos modificado el nivel lógico. Regla 8
+11) Si es posible en ambos casos. El lenguaje de manejo de datos es de alto nivel (de conjuntos). Regla 7
+12) Si es posible, pero en casos en los que se preservan la información, como añadir un atributo a una tabla. Regla 9
+13) Se establecen en la propia base de datos. Regla 10
+14) Si es posible tener BDR entre varios servidores. Se utiliza el mismo lenguaje. Se encarga la propia base de datos. Regla 11
+15) No es posible, se debe seguir manteniendo todas las integridades de los datos mediante la forma que sea. Regla 12

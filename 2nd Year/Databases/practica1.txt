@@ -1,0 +1,88 @@
+--Practica1
+--Ejercicio 1
+select nombre, apellido1, apellido2 from profesores
+where departamento=1;
+--select * from sol_1_1;
+
+--Ejercicio 2
+select nombre, apellido1, apellido2 from profesores
+where departamento !=3;
+--select * from sol_1_2;
+
+--Ejercicio 3
+select nombre, apellido1, apellido2, email Correo from profesores
+where email like '%lcc.uma.es';
+--select * from sol_1_3;
+
+--Ejercicio 4
+select nombre, apellido1, apellido2 from alumnos
+where email is null;
+--select * from sol_1_4;
+
+--Ejercicio 5
+select nombre, creditos, 100*teoricos/creditos "Teoricos(%)", 100*practicos/creditos "Practicos(%)" from asignaturas
+where curso=3;
+--select * from sol_1_5;
+
+--Ejercicio 6
+select alumno, calificacion from matricular
+where asignatura=112 
+order by alumno;
+--select * from sol_1_6;
+
+--Ejercicio 7
+select nombre, hombres+mujeres POBLACION from municipio;
+--select * from sol_1_7;
+
+--Ejercicio 8
+select 'La alumna ' ||nombre ||' '|| apellido1 ||' '|| apellido2|| 'no tiene Correo.' from alumnos
+where email is null and  genero='FEM'
+union
+select 'El alumno ' ||nombre ||' '|| apellido1 ||' '|| apellido2|| 'no tiene Correo.' from alumnos
+where email is null and  genero='MASC';
+
+select DECODE(Genero, 'MASC','El alumno ','FEM','La alumna ') ||nombre ||' '|| apellido1 ||' '|| apellido2|| 'no tiene Correo.' Correos from alumnos
+where email is null;
+--select * from sol_1_8;
+
+--Ejercicio 9
+select nombre, apellido1, apellido2 from profesores
+where antiguedad<to_date('01/01/1990','DD/MM/YYYY');
+--select * from sol_1_9;
+
+--Ejercicio 10
+select nombre, apellido1, apellido2 from profesores
+where trunc(months_between(sysdate, fecha_nacimiento)/12)<30;
+--select * from sol_1_10;
+
+--Ejercicio 11
+select upper(nombre), upper(apellido1), upper(apellido2), trunc((months_between(sysdate, antiguedad)/12)/3) Trienios from profesores
+where trunc((months_between(sysdate, antiguedad)/12)/3)>3;
+--select * from sol_1_11;
+
+--Ejercicio 12
+select replace(nombre, 'Bases de Datos', 'Almacenes de datos') Nombre from asignaturas
+where nombre like '%Bases de Datos%';
+--select * from sol_1_12;
+
+--Ejercicio 13
+select nombre, DECODE(Creditos,null,'NO ASIGNADO',creditos) from asignaturas
+where caracter like 'O%';
+--select * from sol_1_13;
+
+--Ejercicio 14
+select dni, nombre, apellido1, apellido2, genero, direccion, telefono, email, fecha_nacimiento, fecha_prim_matricula from alumnos
+where trunc(months_between(sysdate,fecha_prim_matricula))<2;
+--select * from sol_1_14;
+
+--Ejercicio 15
+select dni, nombre, apellido1, apellido2, genero, direccion, telefono, email, fecha_nacimiento, fecha_prim_matricula from alumnos
+where trunc(months_between(fecha_prim_matricula,fecha_nacimiento)/12)<18;
+--select * from sol_1_15;
+
+--Ejercicio 16
+select dni, nombre, apellido1, apellido2, genero, direccion, telefono, email, fecha_nacimiento, fecha_prim_matricula from alumnos
+where next_day(fecha_prim_matricula,'Lunes')-fecha_prim_matricula=7;
+--select * from sol_1_16;
+
+

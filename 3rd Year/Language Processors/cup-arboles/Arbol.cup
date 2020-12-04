@@ -1,0 +1,86 @@
+terminal ALL, CLL, COMA;
+terminal Integer NUMERO;
+
+non terminal Arbol exp_l, exp;
+
+precedence left COMA;
+exp_l ::= ALL exp:e CLL
+          {:RESULT=e;:}
+          |
+          NUMERO:n
+          {: Arbol a = new Arbol();
+             a.raiz=n;
+             a.maximo=n;
+             a.profundidad=1;
+             a.elementos=1;
+             a.sumaNivel[0]=n;
+             a.arbolInverso=String.valueOf(n);
+             a.grafo="";
+             RESULT=a;
+          :}
+          ;
+ 
+exp ::= exp:e1 COMA NUMERO:n COMA exp:e2
+        {: Arbol a = new Arbol();
+           a.raiz=n;
+           if(e1.maximo > e2.maximo){
+            if(e1.maximo > n){
+                a.maximo=e1.maximo;
+            }else{
+                a.maximo=n;
+            }
+           }else{
+            if(e2.maximo > n){
+                a.maximo=e2.maximo;
+            }else{
+                a.maximo=n;
+            }
+           }
+           if(e1.profundidad >= e2.profundidad){
+            a.profundidad=e1.profundidad+1;
+           }else{
+             a.profundidad=e2.profundidad+1;
+           }
+           a.elementos=e1.elementos+e2.elementos+1;
+           
+           a.sumaNivel[0]=n;
+	       if(e1.profundidad >= e2.profundidad){
+                for(int i=1;i<e1.profundidad+1;i++){
+                    if(e2.sumaNivel[i-1]==null){
+                        a.sumaNivel[i]=e1.sumaNivel[i-1];
+                    }else{
+                        a.sumaNivel[i]=e1.sumaNivel[i-1]+e2.sumaNivel[i-1];
+                    }
+                }
+           }else{
+                for(int i=1;i<e2.profundidad+1;i++){
+                    if(e1.sumaNivel[i-1]==null){
+                        a.sumaNivel[i]=e2.sumaNivel[i-1];
+                    }else{
+                        a.sumaNivel[i]=e1.sumaNivel[i-1]+e2.sumaNivel[i-1];
+                    }
+                }
+           }
+           
+           a.arbolInverso="{"+e2.arbolInverso+","+String.valueOf(n)+","+e1.arbolInverso+"}";
+           a.grafo = e1.grafo+" "+String.valueOf(n)+" -> {"+String.valueOf(e1.raiz)+","+String.valueOf(e2.raiz)+"};"+e2.grafo;
+           RESULT=a;
+        :}
+        |
+        ALL exp:e CLL 
+        {:RESULT=e;:}
+        |
+        NUMERO:n
+        {: Arbol a = new Arbol();
+           a.raiz=n;
+           a.maximo=n;
+           a.profundidad=1;
+           a.elementos=1;
+           a.sumaNivel[0]=n;
+           a.arbolInverso=String.valueOf(n);
+           a.grafo="";
+           RESULT=a;
+         :}
+        ;
+
+         

@@ -1,0 +1,12 @@
+package backtrackingYRyP;
+
+public class todosPrimos {
+
+	static void todosPrimos(int N, int S, int P) {
+		for(int i=P+1; i<=S;i++) {
+			if(valid(i)) {
+				prime.add(i);
+			}
+		}
+	}
+}

@@ -1,0 +1,47 @@
+package practicalab;
+
+
+public class asignarTareas {
+	private static int[] solucion;
+	private static int[] sol;
+	private static int dimension;
+	private static int optimo;
+
+	public void vueltaAtras(int etapa) {
+		// TODO: implementar el algoritmo que encuentra la primera solución para una etapa concreta
+		if(etapa<dimension) {
+			for(int i=0; i<dimension;i++) {
+				sol[etapa]=i;
+				if(valido(etapa)) {
+					vueltaAtras(etapa+1);
+				}
+			}
+		}else {
+			optimo();
+		}
+		
+	}
+	
+	private void optimo() {
+		if(optimo==NULL) {
+			
+		}
+		for(int i=0;)
+	}
+	protected Boolean valido(int etapa) {
+		// TODO: implementar el algoritmo para validar si una posible solución es válida para una etapa concreta
+		for(int i=0; i < etapa; i++) 
+			if (solucion[i]==solucion[etapa])
+				return false;
+		
+		return true;
+	}
+	
+	public static void main(String args[]) {
+		dimension = 3;
+		solucion = new int[dimension];
+		int costes[][]= {{4,2,3},{1,5,3},{6,4,3}};
+		
+		
+	}
+}

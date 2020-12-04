@@ -1,0 +1,3 @@
+INDEX VERSION 1.131+/home/jj/Escritorio/E.Datos/Tema_5/Parcial/huffman/.metadata/.plugins/org.eclipse.jdt.core
+646308851.index
+941512091.index

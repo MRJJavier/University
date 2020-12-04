@@ -1,0 +1,10 @@
+drop table BENEFICIARIO cascade constraints;
+drop table CASA_POPULORUM cascade constraints;
+drop table CONTABILIDAD cascade constraints;
+drop table DONANTE cascade constraints;
+drop table PERSONAL_ASOCIACIÓN cascade constraints;
+drop table PROVEEDOR cascade constraints;
+drop table PROYECTO cascade constraints;
+drop table SOCIO cascade constraints;
+drop table TIPO_CENTRO cascade constraints;
+drop table CENTRO cascade constraints;

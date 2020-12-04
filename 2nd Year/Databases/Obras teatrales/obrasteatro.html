@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<meta name=Title "Comprobaci&oacute;n de esquemas">
+<meta name=Keywords content="Manuel Enciso">
+<meta http-equiv=Content-Type content="text/html; charset=macintosh">
+
+
+	<META NAME="GENERATOR" Content="Enciso Handwritter">
+	<TITLE>Laboratorio de Bases de Datos</TITLE>
+</HEAD>
+
+<BODY bgcolor="white" lang="ES-TRAD" style="tab-interval:35.4pt">
+<CENTER>
+  <P> 
+  <table border=0 cellspacing=0 cellpadding=0 >
+    <tr> 
+      <td width=351 valign=top style='width:351.4pt;border:none;background:#0C0C0C;
+  padding:0cm 5.4pt 0cm 5.4pt'> 
+        <p align=right><FONT FACE='arial' SIZE="5" COLOR="#FFFFFF"><br>Docencia Bases 
+          de Datos <BR><FONT FACE='arial' SIZE="3" COLOR="#FFFFFF">ETSI Inform&aacute;tica <BR>
+          Universidad de M&aacute;laga </font></p>
+      </td>
+      <td width=125 valign=top style='width:124.65pt;border:none;background:navy;
+  padding:0cm 5.4pt 0cm 5.4pt'> <BR>
+        
+        <p ><FONT FACE='arial' SIZE="3" COLOR="#FFFFFF">
+          Esquemas de Bases de Datos</FONT><o:p></o:p></p>
+    </tr>
+  </table>
+  </CENTER>
+  <BR>
+<P>
+<P><FONT SIZE="3" >FASE 1</FONT> 
+
+
+<FONT FACE='arial' SIZE="2" >
+
+
+<HR>
+Se desea mantener informaci&oacute;n acerca de todos
+los espect&aacute;culos teatrales que se presentan a concurso en los festivales de
+artes esc&eacute;nicas y toda la informaci&oacute;n relacionada con ellas.</P>
+
+<P>Un festival es una convocatoria para que los grupos
+presenten sus espect&aacute;culos a concurso. Se identifica con un c&oacute;digo
+y tiene un nombre (que es &uacute;nico), una ciudad en la que se celebra (que ha de ser introducida obligatoriamente), su pa&iacute;s
+y los d&iacute;as que dura. 
+<br>
+Cada espect&aacute;culo es montado por un grupo teatral exclusivamente
+que decide presentarlo a concurso en un &uacute;nico festival (es como su estreno).
+De estos espect&aacute;culos se recoge su c&oacute;digo (que lo identifica), nombre
+(que es &uacute;nico), a&ntilde;o en que fue escrito (cuatro cifras) y valoraci&oacute;n econ&oacute;mica
+en euros necesaria para su montaje. Esta informaci&oacute;n sobre los espect&aacute;culos
+incluye el dato del festival donde se presenta y el grupo que lo interpreta.</P>
+
+<P>De los grupos tambi&eacute;n deseamos tener informaci&oacute;n
+sobre los mismos: nombre (que es &uacute;nico), pa&iacute;s, ciudad, a&ntilde;o de
+fundaci&oacute;n y a&ntilde;o de fin de actividad.</P>
+<P>Por &uacute;ltimo, los grupos pueden pertenecer
+o no a una s&oacute;la tendencia, de la que se almacena un c&oacute;digo (que la identifica), la fecha
+de su nacimiento o creaci&oacute;n y el nombre de la misma.<BR>
+Escriba el dise&ntilde;o entidad/relaci&oacute;n
+correspondiente a este modelo y cree el esquema relacional correspondiente.</P>
+
+
+<P>
+<P><FONT SIZE="3" >FASE 2</FONT> 
+<HR>
+Se ha decidido incluir nueva informaci&oacute;n en
+nuestra base de datos relativa a los patrocinadores de los grupos. Estos patrocinadores
+son fundaciones que nacen para impulsar la cultura y son la &quot;cara p&uacute;blica&quot;
+de ciertos grupos empresariales. Los grupos teatrales pueden tener uno o varias fundaciones
+patrocinadoras que aportan fondos para el mantenimiento de los grupos. De los patrocinadores
+se quiere conocer el nombre, pa&iacute;s y ciudad donde est&aacute; la sede, a&ntilde;o
+de creaci&oacute;n de la fundaci&oacute;n y a&ntilde;o en que se inicia y termina
+el mecenazgo a ese grupo. A su vez, una misma fundaci&oacute;n puede patrocinar a
+varios grupos.</P>
+<P>El modelo que hemos obtenido es el siguiente: 
+<BR>
+<IMG SRC="obrasteatro.jpg"  BORDER="0">
+<br>&nbsp;No obstante en su esquema aparece una versi&oacute;n anterior del esquema que no se corresponde exactamente con lo especificado en el diagrama E/R. Realice las modificaciones al modelo relacional que est&aacute;
+ya creado en su esquema para que se corresponda con el dise&ntilde;o especificado en el modelo entidad/relaci&oacute;n.</P>
+<A HREF="obrasteatro.sql">Pinche aqu&iacute;
+para conseguir el script que genera el esquema original</A>.
+
+<P>Las tablas disponen de algunas filas ya insertadas,
+por lo que si alguna de ellas le causa problemas con las <I>restricciones</I> que
+cree, deber&aacute; cambiar sus valores para que cumplan las condiciones establecidas.
+Si los valores se han de mover de tabla, realice operaciones con INSERT o UPDATE
+para conservar dichos valores.Bajo ning&uacute;n concepto se puede borrar una tabla
+del modelo para volver a crearla.
+<BR>
+Adem&aacute;s tenga en cuenta las siguientes restricciones:
+
+<UL>
+	<LI>Tipo_relaci&oacute;n es un c&oacute;digo art&iacute;stico
+	que puede valer A, B, C.
+	<LI>En la tabla PATROCINIO, Final debe ser posterior
+	a Inicio.
+	<LI>Multinacional es un atributo booleano con valores
+	de tipo varchar2 y son exactamente 'TRUE' o 'FALSE' que toma como valor por defecto
+	'TRUE'.
+	<LI>Si la compa&ntilde;&iacute;a  es una multinacional, entonces la ciudad debe tomar el mismo valor
+	que el pa&iacute;s.
+</UL>
+
+<BR>
+<BR>
+<hr>
+
+<CENTER>
+  <p></p>
+  <table border=0 HEIGHT="2" cellspacing=0 cellpadding=0 width="100%">
+    <tr> 
+      <td width=295 valign=top style='width:295pt;border:none;background:#0C0C0C;
+  padding:0cm'> 
+        <p align=right><FONT FACE='arial' SIZE="2" COLOR="#FFFFFF"> <BR>
+          M. Enciso</FONT><o:p></o:p></p>
+      </td>
+      <td width=125 valign=top style='width:124.65pt;border:none;background:navy;
+  padding:0cm'> </td>
+      <td WIDTH="65"> 
+        <P ><A HREF="http://www.uma.es"><IMG SRC="http://www.lcc.uma.es/~enciso/logouma.jpg"
+WIDTH="65" HEIGHT="57" vALIGN="top" BORDER="0"> </a>
+      </td>
+    </tr>
+  </table>
+</center>
+
+
+
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////////////////////////////////////////////
+// ALUMNO:
+// GRUPO:
+////////////////////////////////////////////////////////////////////////////////////////////
+
+import java.util.Scanner;
+
+public final class BuscaElem{
+	
+	public static <T extends Comparable<? super T>> T kesimo(T v[], int k) {
+		return kesimoRec(v,0,v.length-1,k);
+	}
+
+	public static <T extends Comparable<? super T>> T kesimoRec(T v[], int izq, int der, int k) {
+		// A IMPLEMENTAR POR EL ALUMNO
+		int s = OrdenacionRapida.partir(v,v[k],izq,der);
+		if(s<k) kesimoRec(v,s,der,k);
+		if(s>k) kesimoRec(v,izq,s,k);
+		return v[k];
+    }
+	/*
+	 * [491,54,46,309,367,177,10,5,215,174,315,457,270,333,208,208,386,148,339,68,234,481,146,275,410,42,418,403,275,104,481,385,477,6,78,143,383,234,347,94,479,262,467,294,479,80,62,257,20,4]
+(ordenado):         [4,5,6,10,20,42,46,54,62,68,78,80,94,104,143,146,148,174,177,208,208,215,234,234,257,262,270,275,275,294,309,315,333,339,347,367,383,385,386,403,410,418,457,467,477,479,479,481,481,491]
+para la posicion:   13
+Devuelve:           143
+Deberia devolver:   94
+
+Correcta 	 
+
+  
+	 * 
+	 */
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		/*int maxvector;
+		int i,k;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Introduce el numero de posiciones del vector: ");
+		maxvector=sc.nextInt();
+		Integer v[]=new Integer[maxvector];
+
+		System.out.print("Introduce "+maxvector+" enteros separados por espacios: ");
+		for (i=0;i<maxvector;i++) v[i]=sc.nextInt();
+		System.out.print("Introduce la posicion k deseada (de 1-"+maxvector+"): ");k=sc.nextInt();
+		Integer elem=kesimo(v,k-1);
+		System.out.print("El elemento "+k+"-esimo es: "+elem);*/
+		int v[] = {491,54,46,309,367,177,10,5,215,174,315,457,270,333,208,208,386,148,339,68,234,481,146,275,410,42,418,403,275,104,481,385,477,6,78,143,383,234,347,94,479,262,467,294,479,80,62,257,20,4};
+		System.out.println(kesimo((T)v,13));
+		
+		
+	}
+
+}

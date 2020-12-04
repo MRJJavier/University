@@ -1,0 +1,42 @@
+////////////////////////////////////////////////////////////////////////////////////////////
+// ALUMNO:
+// GRUPO:
+////////////////////////////////////////////////////////////////////////////////////////////
+
+import java.util.Scanner;
+
+public final class BuscaElem{
+	
+	public static <T extends Comparable<? super T>> T kesimo(T v[], int k) {
+		return kesimoRec(v,0,v.length-1,k);
+	}
+
+	public static <T extends Comparable<? super T>> T kesimoRec(T v[], int izq, int der, int k) {
+		// A IMPLEMENTAR POR EL ALUMNO
+		int s = OrdenacionRapida.partir(v,v[k],izq,der);
+		if(s<k) kesimoRec(v,s,der,k);
+		if(s>k) kesimoRec(v,izq,s,k);
+		return v[k];
+    }
+	
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		int maxvector;
+		int i,k;
+		int v[] = {179,134,70,234,75,249,45,39,262,234,338,301,326,328,158,453,48,123,54,105,198,78,55,487,303,353,26,224,228,393,463,315,83,30,290,79,115,12,359,340,187,485,215,158,208,422,105,443,431,417};
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Introduce el numero de posiciones del vector: ");
+		maxvector=sc.nextInt();
+		//Integer v[]=new Integer[maxvector];
+
+		System.out.print("Introduce "+maxvector+" enteros separados por espacios: ");
+		for (i=0;i<maxvector;i++) v[i]=sc.nextInt();
+		System.out.print("Introduce la posicion k deseada (de 1-"+maxvector+"): ");k=sc.nextInt();
+		Integer elem=kesimo(v,k-1);
+		System.out.print("El elemento "+k+"-esimo es: "+elem);
+	}
+
+}

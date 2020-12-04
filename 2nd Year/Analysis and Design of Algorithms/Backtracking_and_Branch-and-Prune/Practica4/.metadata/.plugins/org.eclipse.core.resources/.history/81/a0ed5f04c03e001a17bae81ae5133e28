@@ -1,0 +1,40 @@
+package practicalab;
+
+
+public class asignarTareas {
+	private static int[] solucion;
+	private static int dimension;
+	private  int[][] costes;
+	
+	public void vueltaAtras(int etapa) {
+		// TODO: implementar el algoritmo que encuentra la primera solución para una etapa concreta
+		for(int i=0; i<dimension;i++) {
+			
+			if(valido(i)) {
+				
+			}
+		}
+	}
+	
+	/**
+	 * Indica si la posible solución es válida para una etapa concreta
+	 * @param  etapa etapa para la que queremos validar la solución
+	 * @return si la solución es correcta
+	 */
+	protected Boolean valido(int etapa) {
+		// TODO: implementar el algoritmo para validar si una posible solución es válida para una etapa concreta
+		for(int i=0; i < etapa; i++) 
+			if (solucion[i]==solucion[etapa])
+				return false;
+		
+		return true;
+	}
+	
+	public static void main(String args[]) {
+		dimension = 3;
+		solucion = new int[dimension];
+		costes = { {3,2,4}, {3,4,5},{4,2,1}};
+		
+		
+	}
+}

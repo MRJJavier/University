@@ -1,0 +1,259 @@
+import java_cup.runtime.*;
+
+/* Terminales */
+
+terminal ASIG;
+terminal AND, OR, NOT;
+terminal MAS, MENOS, POR, DIV, MENOSU;
+terminal PRINT;
+terminal LE, LT, EQ, NE, GT, GE;
+terminal AP, CP, AC, CC;
+terminal PYC;
+terminal IF;
+terminal ELSE;
+terminal DO;
+terminal WHILE;
+terminal FOR;
+terminal String NUMERO;
+terminal String IDENT;
+
+/* No terminales */
+
+non terminal listaSent, sent, sentComp;
+non terminal sentAsig;
+non terminal sentPrint;
+non terminal sentIf, parteElse;
+non terminal DosEtiquetas prIf;
+non terminal sentWhile;
+non terminal DosEtiquetas prWhile;
+non terminal sentDo;
+non terminal DosEtiquetas prDo;
+non terminal sentFor;
+non terminal DosEtiquetas prFor;
+non terminal String exp;
+non terminal DosEtiquetas cond;
+
+/* Precedencias */
+
+precedence left OR;
+precedence left AND;
+precedence nonassoc NOT;
+precedence nonassoc LE, LT, EQ, NE, GT, GE;
+precedence right ASIG;
+precedence left MAS, MENOS;
+precedence left POR, DIV;
+precedence left MENOSU;
+precedence nonassoc IF;
+precedence nonassoc ELSE;
+
+/* Gramatica */
+listaSent ::= listaSent sent
+            | sent
+            ;
+
+sent ::= sentComp
+        | sentAsig
+        | sentPrint
+        | sentIf
+        | sentWhile
+        | sentDo
+        | sentFor
+        ;
+
+
+sentComp::= AC listaSent CC;
+
+
+
+sentAsig ::= exp PYC;
+
+
+
+sentPrint ::= PRINT AP exp:e CP PYC
+             {: Generador.gc(Generador.PRINT,e); :}
+              ;
+
+
+
+prIf ::= IF {: RESULT = new DosEtiquetas(); :}
+             ;
+
+sentIf ::= prIf:aux AP cond:c CP
+            {:
+              Generador.gc(Generador.LABEL,c.v());
+            :}
+            sent
+            {:
+              Generador.gc(Generador.GOTO,aux.fin());
+              Generador.gc(Generador.LABEL,c.f());
+            :}
+            parteElse
+            {:
+              Generador.gc(Generador.LABEL,aux.fin());
+            :}
+            ;
+
+parteElse ::= ELSE sent
+             | %prec IF
+             ;
+
+
+
+prWhile ::= WHILE {: RESULT = new DosEtiquetas(); :}
+            ;
+
+sentWhile ::= prWhile:aux  {:
+                             Generador.gc(Generador.LABEL,aux.inicio());
+                           :}
+              AP cond:c CP {:
+                             Generador.gc(Generador.LABEL,c.v());
+                           :}
+              sent         {:
+                             Generador.gc(Generador.GOTO,aux.inicio());
+                             Generador.gc(Generador.LABEL,c.f());
+                           :}
+              ;
+
+
+
+prDo ::= DO {: RESULT = new DosEtiquetas(); :}
+            ;
+
+sentDo ::= prDo:aux {:
+                      Generador.gc(Generador.LABEL,aux.inicio());
+                    :}
+           sent
+           WHILE AP cond:c CP PYC
+                    {:
+                      Generador.gc(Generador.LABEL,c.v());
+                      Generador.gc(Generador.GOTO,aux.inicio());
+                      Generador.gc(Generador.LABEL,c.f());
+                    :}
+           ;
+
+
+
+prFor ::= FOR {: RESULT = new DosEtiquetas();:};
+
+sentFor ::= prFor:aux AP exp:e1 PYC
+            {:
+              Generador.gc(Generador.LABEL,aux.inicio());
+            :}
+            cond:c PYC
+            {:
+              Generador.gc(Generador.LABEL,aux.fin());
+            :}
+            exp:e2 CP
+            {:
+              Generador.gc(Generador.GOTO,aux.inicio());
+              Generador.gc(Generador.LABEL,c.v());
+            :}
+            sent
+            {:
+                Generador.gc(Generador.GOTO,aux.fin());
+                Generador.gc(Generador.LABEL,c.f());
+            :}
+            ;
+
+
+
+exp ::= exp:e1 MAS exp:e2 {:
+                            String t = Generador.nuevaTemp();
+                            Generador.gc(Generador.ADD,t,e1,e2);
+                            RESULT = t;
+                          :}
+       | exp:e1 MENOS exp:e2 {:
+                            String t = Generador.nuevaTemp();
+                            Generador.gc(Generador.SUB,t,e1,e2);
+                            RESULT = t;
+                          :}
+       | exp:e1 POR exp:e2 {:
+                            String t = Generador.nuevaTemp();
+                            Generador.gc(Generador.MUL,t,e1,e2);
+                            RESULT = t;
+                          :}
+       | exp:e1 DIV exp:e2 {:
+                            String t = Generador.nuevaTemp();
+                            Generador.gc(Generador.DIV,t,e1,e2);
+                            RESULT = t;
+                          :}
+       | MENOS exp:e1 {:
+                            String t = Generador.nuevaTemp();
+                            Generador.gc(Generador.SUB,t,"0",e1);
+                            RESULT = t;
+                          :} %prec MENOSU
+       | IDENT:id ASIG exp:e1{:
+                            Generador.gc(Generador.ASIG,id,e1);
+                            RESULT = id;
+                            :}
+       | AP exp:e1 CP {:
+                        RESULT = e1;
+                      :}
+       | NUMERO:n {:
+                    RESULT = n;
+                  :}
+       | IDENT:id {:
+                    RESULT = id;
+                  :}
+       ;
+
+
+cond ::= exp:e1 EQ exp:e2 {:
+                            DosEtiquetas vf = new DosEtiquetas();
+                            Generador.gc(Generador.IFEQ,vf.v(),e1,e2);
+                            Generador.gc(Generador.GOTO,vf.f(),e1,e2);
+                            RESULT = vf;
+                          :}
+        | exp:e1 NE exp:e2 {:
+                            DosEtiquetas vf = new DosEtiquetas();
+                            Generador.gc(Generador.IFEQ,vf.f(),e1,e2);
+                            Generador.gc(Generador.GOTO,vf.v(),e1,e2);
+                            RESULT = vf;
+                          :}
+        | exp:e1 LT exp:e2 {:
+                            DosEtiquetas vf = new DosEtiquetas();
+                            Generador.gc(Generador.IFLT,vf.v(),e1,e2);
+                            Generador.gc(Generador.GOTO,vf.f(),e1,e2);
+                            RESULT = vf;
+                          :}
+        | exp:e1 LE exp:e2 {:
+                            DosEtiquetas vf = new DosEtiquetas();
+                            Generador.gc(Generador.IFLT,vf.f(),e2,e1);
+                            Generador.gc(Generador.GOTO,vf.v(),e2,e1);
+                            RESULT = vf;
+                          :}
+        | exp:e1 GT exp:e2 {:
+                            DosEtiquetas vf = new DosEtiquetas();
+                            Generador.gc(Generador.IFLT,vf.v(),e2,e1);
+                            Generador.gc(Generador.GOTO,vf.f(),e2,e1);
+                            RESULT = vf;
+                          :}
+        | exp:e1 GE exp:e2 {:
+                            DosEtiquetas vf = new DosEtiquetas();
+                            Generador.gc(Generador.IFLT,vf.f(),e1,e2);
+                            Generador.gc(Generador.GOTO,vf.v(),e1,e2);
+                            RESULT = vf;
+                          :}
+        |  cond:c1 AND        {:
+	        				    Generador.gc(Generador.LABEL, c1.v()); 
+                              :}
+           cond:c2            {:
+	        					Generador.gc(Generador.LABEL, c2.f()); 
+	        					Generador.gc(Generador.GOTO, c1.f()); 
+	        					RESULT = new DosEtiquetas(c2.v(), c1.f());
+                              :}       
+	     | cond:c1 OR         {:
+	        					Generador.gc(Generador.LABEL, c1.f()); 
+                              :}
+           cond:c2            {:
+	        				    Generador.gc(Generador.LABEL, c2.v()); 
+	        					Generador.gc(Generador.GOTO, c1.v()); 
+	        					RESULT = new DosEtiquetas(c1.v(), c2.f());
+                              :}       
+	    |  NOT cond:c1        {:
+	        					RESULT = new DosEtiquetas(c1.f(), c1.v());
+                              :}
+        | AP cond:c1 CP       {:
+                                RESULT = c1;
+                              :}       
+        ;          

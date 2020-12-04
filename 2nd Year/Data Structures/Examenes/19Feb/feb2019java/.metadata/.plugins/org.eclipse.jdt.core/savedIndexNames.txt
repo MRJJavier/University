@@ -1,0 +1,3 @@
+INDEX VERSION 1.131+/home/jj/Escritorio/E.Datos/Examenes/Feb'19/feb2019java/.metadata/.plugins/org.eclipse.jdt.core
+646308851.index
+3196616424.index

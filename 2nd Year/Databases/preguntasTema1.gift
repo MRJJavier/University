@@ -1,0 +1,21 @@
+
+¿Qué significa DML?
+{~Database Management Language.
+=Data Manipulation Language.
+~Data Management Language.}
+
+¿Qué modelo siguen las bases de datos NoSQL?
+{=BASE.
+~ACID.
+~JOIN.}
+
+¿Dónde se almacena la dirección de los datos a los que queremos acceder?
+{~En el SGBD.
+~No hace falta, accedemos directamente a ellos.
+=En los metadatos.}
+
+//Extra
+¿Cuál es el principal tipo de base de datos con implementación Clave-Valor?
+{=Voldemort.
+~Potter.
+~Dumbledore.}

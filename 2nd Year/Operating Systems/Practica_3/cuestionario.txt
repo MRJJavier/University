@@ -1,0 +1,27 @@
+Pregunta 1
+
+Precisamente por ser basura no se produjo una violación de segmento, ya que al declarar el puntero pero no inicializarlo, la dirección de memoria apuntada por el puntero cada vez que ejecutamos el programa es aleatoria y podemos acceder al valor contenido de esa dirección apuntada.
+
+Al declarar e inicializar el puntero a 0 o NULL se produce una violación de segmento si intentamos acceder al contenido de esa dirección de memoria porque no tenemos permisos sobre dicho contenido.
+
+Desde el punto de vista de la buenas prácticas de programación, por ejemplo, nos aseguramos que no modificamos por error el contenido de una dirección de memoria aleatoria. También nos ahorramos problemas a la hora de encontrar porque no funciona bien el programa.
+
+Pregunta 2
+
+El problema es que el tamaño máximo definido para la cadena1 es de 35 pero al realizar la concatenación de ambas cadenas y guardarla en cadena1 nos hemos pasado, ya que el tamaño de la nueva cadena es de 39, lo que significa que hemos podido sobreescribir 4 bytes de la memoria (cada char ocupa 1 byte). Para solucionarlo usariamos p_cadena que esta declarado e inicializado a NULL pero no se utiliza en el codigo.
+
+Codigo a añadir/modificar para el correcto funcionamiento.
+
+  int l_cadena1, l_cadena2;
+  l_cadena1=strlen(buffer1);
+  l_cadena2=strlen(buffer2);
+  p_cadena = (char *) malloc((l_cadena1 + l_cadena2 + 1)*sizeof(char));
+  if (p_cadena == NULL)
+  {
+    /* Siempre se debe comprobar el éxito de la allocación */
+    printf("Error allocando memoria\n");
+    exit(-1); /* Se devuelve un código de error */
+  }
+  strcpy(p_cadena,buffer1);
+  strcat(p_cadena, buffer2);
+   

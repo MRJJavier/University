@@ -1,0 +1,3 @@
+INDEX VERSION 1.131+/home/jj/Escritorio/Universidad/3ºCarrera/1ºCuatrimestre/ADA/Practicas/P2/.metadata/.plugins/org.eclipse.jdt.core
+646308851.index
+863547646.index
