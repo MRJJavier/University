@@ -1,0 +1,6 @@
+Presion Arterial;Azucar en sangre;Indice de colesterol;Alergia a antibioticos;Otras alergias;Administrar farmaco
+Baja;Alta;Baja;No;No;Si
+Media;Baja;Alta;Si;Si;No
+Alta;Baja;Alta;Si;No;Si
+Alta;Baja;Baja;No;Si;Si
+Alta;Baja;Alta;Si;Si;No
